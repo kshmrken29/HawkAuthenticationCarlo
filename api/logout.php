@@ -50,9 +50,6 @@ if (!$user_id) {
     sendResponse('error', 'Invalid Hawk authentication');
 }
 
-<<<<<<< HEAD
-// Revoke the Hawk ID
-=======
 // Clear login session cookie
 setcookie('login_session_' . $user_id, '', time() - 3600, '/');
 
@@ -67,7 +64,6 @@ $update_stmt->execute();
 $update_stmt->close();
 
 // Revoke the old Hawk ID
->>>>>>> 348f439 (Initial commit from XAMPP htdocs)
 if (revokeHawkId($conn, $hawk_id)) {
     sendResponse('success', 'Logged out successfully');
 } else {

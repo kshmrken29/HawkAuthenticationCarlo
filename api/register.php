@@ -55,11 +55,7 @@ if ($result->num_rows > 0) {
 // Hash password
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-<<<<<<< HEAD
-// Generate Hawk credentials
-=======
 // Generate Hawk credentials (internal use only)
->>>>>>> 348f439 (Initial commit from XAMPP htdocs)
 $hawk_id = generateHawkId();
 $hawk_key = generateSecureToken(32);
 $hawk_algorithm = 'sha256';
@@ -70,14 +66,6 @@ $stmt->bind_param("ssssss", $username, $email, $hashed_password, $hawk_id, $hawk
 
 if ($stmt->execute()) {
     $user_id = $stmt->insert_id;
-<<<<<<< HEAD
-    sendResponse('success', 'User registered successfully', [
-        'id' => $user_id, 
-        'username' => $username, 
-        'hawk_id' => $hawk_id,
-        'hawk_key' => $hawk_key,
-        'hawk_algorithm' => $hawk_algorithm
-=======
 
     // Add the Hawk ID to revoked_tokens table to allow immediate login
     $revoke_stmt = $conn->prepare("INSERT INTO revoked_tokens (hawk_id) VALUES (?)");
@@ -90,7 +78,6 @@ if ($stmt->execute()) {
         'id' => $user_id,
         'username' => $username,
         'email' => $email
->>>>>>> 348f439 (Initial commit from XAMPP htdocs)
     ]);
 } else {
     sendResponse('error', 'Failed to register user: ' . $conn->error);
@@ -99,8 +86,4 @@ if ($stmt->execute()) {
 // Close connection
 $stmt->close();
 $conn->close();
-<<<<<<< HEAD
-?> 
-=======
 ?>
->>>>>>> 348f439 (Initial commit from XAMPP htdocs)

@@ -38,13 +38,8 @@ $database = new Database();
 $conn = $database->getConnection();
 
 // Search items
-<<<<<<< HEAD
-$stmt = $conn->prepare("SELECT * FROM items WHERE name LIKE ? OR description LIKE ?");
-$stmt->bind_param("ss", $search_query, $search_query);
-=======
 $stmt = $conn->prepare("SELECT * FROM items WHERE (name LIKE ? OR description LIKE ?) AND user_id = ?");
 $stmt->bind_param("ssi", $search_query, $search_query, $user_id);
->>>>>>> 348f439 (Initial commit from XAMPP htdocs)
 $stmt->execute();
 $result = $stmt->get_result();
 

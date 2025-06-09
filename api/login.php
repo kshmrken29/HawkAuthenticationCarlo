@@ -48,26 +48,16 @@ if (!password_verify($password, $user['password'])) {
     sendResponse('error', 'Invalid password');
 }
 
-<<<<<<< HEAD
-// Check if the user's current Hawk ID is not revoked (meaning they're already logged in)
-=======
 // Check if the user's current Hawk ID is NOT in revoked_tokens
 // This is the simple way to check if they're already logged in
->>>>>>> 348f439 (Initial commit from XAMPP htdocs)
 $check_stmt = $conn->prepare("SELECT id FROM revoked_tokens WHERE hawk_id = ?");
 $check_stmt->bind_param("s", $user['hawk_id']);
 $check_stmt->execute();
 $check_result = $check_stmt->get_result();
-<<<<<<< HEAD
-
-// If the Hawk ID is not in the revoked_tokens table, the user is already logged in
-if ($check_result->num_rows === 0) {
-=======
 $check_stmt->close();
 
 // If the Hawk ID is not in the revoked_tokens table, the user is already logged in
 if ($check_result->num_rows === 0 && !empty($_COOKIE['login_session_' . $user['id']])) {
->>>>>>> 348f439 (Initial commit from XAMPP htdocs)
     sendResponse('error', 'User already logged in. Please logout first before logging in again.', [
         'id' => $user['id'],
         'username' => $user['username'],
@@ -76,10 +66,6 @@ if ($check_result->num_rows === 0 && !empty($_COOKIE['login_session_' . $user['i
         'hawk_algorithm' => $user['hawk_algorithm']
     ]);
 }
-<<<<<<< HEAD
-$check_stmt->close();
-=======
->>>>>>> 348f439 (Initial commit from XAMPP htdocs)
 
 // Generate new Hawk credentials
 $new_hawk_id = generateHawkId();
@@ -92,12 +78,9 @@ $update_stmt->bind_param("ssi", $new_hawk_id, $new_hawk_key, $user['id']);
 $update_stmt->execute();
 $update_stmt->close();
 
-<<<<<<< HEAD
-=======
 // Set a cookie to track login session
 setcookie('login_session_' . $user['id'], '1', time() + 86400, '/'); 
 
->>>>>>> 348f439 (Initial commit from XAMPP htdocs)
 // Send response with new Hawk credentials
 sendResponse('success', 'Login successful', [
     'id' => $user['id'],

@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "bb031409-27a4-489b-a665-1dc5babcd13a",
-		"name": "Hawk Auth Carlo",
+		"_postman_id": "f3e822c6-10be-48d4-936b-7444f0a7a25e",
+		"name": "Hawk Auth Carlo Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "34105247"
 	},
@@ -135,12 +135,12 @@
 					"hawk": [
 						{
 							"key": "authKey",
-							"value": "861c5a28f8f5a9ea9e603cebc984582897c6c97ff7444e0c513031a003737297",
+							"value": "c268bdc5d967d799276d07af0535d4bf88a97bb82c0d1cbe7d8b8f526142079e",
 							"type": "string"
 						},
 						{
 							"key": "authId",
-							"value": "hawk_3b0bbff7a88b7e9c",
+							"value": "hawk_16dc25acb87cf8e0",
 							"type": "string"
 						},
 						{
@@ -150,16 +150,17 @@
 						}
 					]
 				},
-				"method": "GET",
+				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost/Hawk-Authentication-Carlo/api/items",
+					"raw": "http://localhost/HawkAuthenticationCarlo/HawkAuthenticationCarlo/api/items",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"path": [
-						"Hawk-Authentication-Carlo",
+						"HawkAuthenticationCarlo",
+						"HawkAuthenticationCarlo",
 						"api",
 						"items"
 					]

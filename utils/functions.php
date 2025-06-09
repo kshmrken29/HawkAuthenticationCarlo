@@ -33,8 +33,6 @@ function validateHawkCredentials($conn, $hawk_id) {
     
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-<<<<<<< HEAD
-=======
         
         // Additional check: Make sure this is the current Hawk ID for this user
         $check_stmt = $conn->prepare("SELECT COUNT(*) as count FROM users WHERE id = ? AND hawk_id = ?");
@@ -48,7 +46,6 @@ function validateHawkCredentials($conn, $hawk_id) {
             return false;
         }
         
->>>>>>> 348f439 (Initial commit from XAMPP htdocs)
         return [
             'user_id' => $row['id'],
             'key' => $row['hawk_key'],
@@ -236,8 +233,6 @@ function generateTestHawkHeader($hawk_id, $hawk_key, $algorithm, $method, $uri) 
     
     return HawkAuth::generateClientHeader($hawk_id, $hawk_key, $algorithm, $method, $uri, $host, $port);
 }
-<<<<<<< HEAD
-=======
 
 // Function to check if a user has recently logged in (within the last 24 hours)
 function checkRecentLoginAttempt($conn, $user_id) {
@@ -270,5 +265,4 @@ function recordLoginAttempt($conn, $user_id) {
     // In a more complex system, you could log this information to a table
     return true;
 }
->>>>>>> 348f439 (Initial commit from XAMPP htdocs)
 ?> 

@@ -35,18 +35,13 @@ if (!$user_id) {
 // Handle different request methods
 switch ($method) {
     case 'GET':
-        // Get single item or all items
+        // Get single item only
         if (isset($_GET['id'])) {
             // Get single item
             $id = $_GET['id'];
             
-<<<<<<< HEAD
-            $stmt = $conn->prepare("SELECT * FROM items WHERE id = ?");
-            $stmt->bind_param("i", $id);
-=======
             $stmt = $conn->prepare("SELECT * FROM items WHERE id = ? AND user_id = ?");
             $stmt->bind_param("ii", $id, $user_id);
->>>>>>> 348f439 (Initial commit from XAMPP htdocs)
             $stmt->execute();
             $result = $stmt->get_result();
             
@@ -54,51 +49,43 @@ switch ($method) {
                 $item = $result->fetch_assoc();
                 sendResponse('success', 'Item found', $item);
             } else {
-<<<<<<< HEAD
-                sendResponse('error', 'Item not found');
-            }
-        } else {
-            // Get all items
-            $stmt = $conn->prepare("SELECT * FROM items");
-=======
                 sendResponse('error', 'Item not found or you do not have permission to view it');
             }
         } else {
-            // Get all items
-            $stmt = $conn->prepare("SELECT * FROM items WHERE user_id = ?");
-            $stmt->bind_param("i", $user_id);
->>>>>>> 348f439 (Initial commit from XAMPP htdocs)
-            $stmt->execute();
-            $result = $stmt->get_result();
-            
-            $items = [];
-            while ($row = $result->fetch_assoc()) {
-                $items[] = $row;
-            }
-            
-            sendResponse('success', 'Items retrieved successfully', $items);
+            sendResponse('error', 'GET method is only for single item retrieval. Use POST to get all items.');
         }
         break;
         
     case 'POST':
-        // Create new item
-        $required_fields = ['name', 'description', 'price'];
-        if (!checkRequiredFields($required_fields, $data)) {
-            sendResponse('error', 'Please fill all required fields');
+        // If no data or empty data, return all items
+        if (empty($data) || (is_array($data) && count($data) === 0)) {
+            $stmt = $conn->prepare("SELECT * FROM items WHERE user_id = ?");
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $items = [];
+            while ($row = $result->fetch_assoc()) {
+                $items[] = $row;
+            }
+            sendResponse('success', 'Items retrieved successfully', $items);
         }
-        
-        $name = $data['name'];
-        $description = $data['description'];
-        $price = $data['price'];
-        
-        $stmt = $conn->prepare("INSERT INTO items (name, description, price, user_id) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssdi", $name, $description, $price, $user_id);
-        
-        if ($stmt->execute()) {
-            $item_id = $stmt->insert_id;
-            sendResponse('success', 'Item created successfully', ['id' => $item_id]);
-        } else {
-            sendResponse('error', 'Failed to create item: ' . $conn->error);
+        // Otherwise, create new item
+        else {
+            $required_fields = ['name', 'description', 'price'];
+            if (!checkRequiredFields($required_fields, $data)) {
+                sendResponse('error', 'Please fill all required fields');
+            }
+            $name = $data['name'];
+            $description = $data['description'];
+            $price = $data['price'];
+            $stmt = $conn->prepare("INSERT INTO items (name, description, price, user_id) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("ssdi", $name, $description, $price, $user_id);
+            if ($stmt->execute()) {
+                $item_id = $stmt->insert_id;
+                sendResponse('success', 'Item created successfully', ['id' => $item_id]);
+            } else {
+                sendResponse('error', 'Failed to create item: ' . $conn->error);
+            }
         }
         break;
         
